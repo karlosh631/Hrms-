@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Project runtime data
+hrms_data.db
+hrms_data.db-shm
+hrms_data.db-wal
+hrms_automation.log
+
+# Credentials
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
