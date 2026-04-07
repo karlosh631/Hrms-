@@ -374,7 +374,11 @@ function getClockEmpId() {
 function setClockStatus(msg, color) {
   const el = document.getElementById("clock-status");
   el.textContent = msg;
-  el.style.setProperty('color', color);
+  if (color) {
+    el.style.setProperty('color', color);
+  } else {
+    el.style.removeProperty('color');
+  }
 }
 
 // ─── Attendance ───────────────────────────────────────
