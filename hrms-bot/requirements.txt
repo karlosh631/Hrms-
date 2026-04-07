@@ -1,0 +1,27 @@
+# HRMS Auto Attendance Bot – required packages
+# Install with:  pip install -r requirements.txt
+
+# Browser automation
+playwright==1.44.0
+
+# Job scheduling
+APScheduler==3.10.4
+
+# GUI & system tray  (desktop mode)
+PyQt5==5.15.10
+
+# Desktop notifications
+plyer==2.1.0
+
+# .env credential management
+python-dotenv==1.0.1
+
+# HTTP networking utilities
+requests==2.31.0
+
+# Cloud API / web dashboard (optional – needed only for HRMS_CLOUD_MODE=true)
+flask==3.0.3
+
+# Windows-specific: registry access for auto-start
+# Installed automatically on Windows by the line below:
+pywin32==306; sys_platform == "win32"
