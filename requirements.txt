@@ -1,0 +1,12 @@
+# Core automation
+playwright>=1.44.0
+apscheduler>=3.10.4
+python-dotenv>=1.0.1
+
+# UI
+PyQt5>=5.15.10
+
+# Notifications
+plyer>=2.1.0
+
+# (SQLite is part of Python's standard library – no extra package needed)
