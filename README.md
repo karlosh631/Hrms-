@@ -12,15 +12,6 @@ A **two-part project**:
 ---
 
 
-   | Setting | Value |
-   |---------|-------|
-   | **Branch to deploy** | `copilot/fix-deployment-issue-hrms` (or `main` after merge) |
-   | **Base directory** | *(leave empty)* |
-   | **Build command** | *(leave empty)* |
-   | **Publish directory** | `.` |
-
-
-
 ## 🔑 Demo Login Credentials (web app only)
 
 | Role | HRMS ID | Password |
