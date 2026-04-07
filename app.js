@@ -407,7 +407,7 @@ function renderEmployees() {
     <td>${escHtml(e.position)}</td>
     <td>${escHtml(e.email)}</td>
     <td>
-      <button class="btn btn-sm btn-danger" onclick="deleteEmployee(${Number(e.id)})">Delete</button>
+      <button class="btn btn-sm btn-danger" data-delete-emp="${Number(e.id)}">Delete</button>
     </td>
   </tr>`).join("");
 }
@@ -443,6 +443,12 @@ function deleteEmployee(id) {
   renderDashboard();
 }
 
+// Delegated handler for the Delete button rendered inside #emp-tbody.
+document.getElementById("emp-tbody").addEventListener("click", e => {
+  const btn = e.target.closest("[data-delete-emp]");
+  if (btn) deleteEmployee(Number(btn.dataset.deleteEmp));
+});
+
 // ─── Leaves ───────────────────────────────────────────
 function renderLeaves() {
   const isAdmin = currentUser.role === "admin";
@@ -465,8 +471,8 @@ function renderLeaves() {
       <td>${statusBadge(l.status)}</td>
       <td>
         ${isAdmin && l.status === "Pending"
-          ? `<button class="btn btn-sm btn-success" onclick="setLeaveStatus(${Number(l.id)},'Approved')">Approve</button>
-             <button class="btn btn-sm btn-danger" style="margin-left:4px" onclick="setLeaveStatus(${Number(l.id)},'Rejected')">Reject</button>`
+          ? `<button class="btn btn-sm btn-success" data-leave-id="${Number(l.id)}" data-leave-action="Approved">Approve</button>
+             <button class="btn btn-sm btn-danger" style="margin-left:4px" data-leave-id="${Number(l.id)}" data-leave-action="Rejected">Reject</button>`
           : ""}
       </td>
     </tr>`;
@@ -503,6 +509,12 @@ function setLeaveStatus(id, status) {
   const rec = leaves.find(l => l.id === id);
   if (rec) { rec.status = status; save("hrms_leaves", leaves); renderLeaves(); }
 }
+
+// Delegated handler for the Approve/Reject buttons rendered inside #leaves-tbody.
+document.getElementById("leaves-tbody").addEventListener("click", e => {
+  const btn = e.target.closest("[data-leave-id]");
+  if (btn) setLeaveStatus(Number(btn.dataset.leaveId), btn.dataset.leaveAction);
+});
 
 // ─── Payroll ──────────────────────────────────────────
 function renderPayroll() {
