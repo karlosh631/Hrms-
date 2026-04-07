@@ -1,4 +1,4 @@
-# HRMS – Horilla Auto Attendance
+# HRMS – https://karls-hrms.netlify.app/
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/placeholder/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
 
