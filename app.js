@@ -253,6 +253,10 @@ function renderProfile() {
     document.getElementById("profile-email").textContent = "";
     document.getElementById("profile-hrms-id").textContent = currentUser.hrmsId;
     document.getElementById("profile-avatar-big").textContent = initials(currentUser.name);
+    document.getElementById("profile-days").textContent = "–";
+    document.getElementById("profile-hours").textContent = "–";
+    document.getElementById("profile-pending-leaves").textContent = "–";
+    document.getElementById("profile-att-tbody").innerHTML = "";
     return;
   }
 
@@ -370,7 +374,7 @@ function getClockEmpId() {
 function setClockStatus(msg, color) {
   const el = document.getElementById("clock-status");
   el.textContent = msg;
-  el.style.color = color;
+  el.style.setProperty('color', color);
 }
 
 // ─── Attendance ───────────────────────────────────────
