@@ -1,6 +1,6 @@
-# HRMS – https://karls-hrms.netlify.app/
+# HRMS 
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/placeholder/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
+https://karls-hrms.netlify.app/
 
 A **two-part project**:
 
