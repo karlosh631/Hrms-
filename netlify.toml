@@ -1,7 +1,7 @@
 # ── Build settings ────────────────────────────────────────────────────────────
 [build]
   publish = "."
-  # No build command needed – this is a pure static site (HTML/CSS/JS).
+  command = ""   # Override any build command set in the Netlify UI – no build step needed.
 
 [build.environment]
   NODE_VERSION = "20"
