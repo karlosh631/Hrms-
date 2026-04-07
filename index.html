@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRMS – Auto Clock In/Out</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="logo">&#128188; HRMS</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-link active" data-page="dashboard">&#127968; Dashboard</a>
+      <a href="#" class="nav-link" data-page="clock">&#128336; Clock In/Out</a>
+      <a href="#" class="nav-link" data-page="attendance">&#128203; Attendance</a>
+      <a href="#" class="nav-link" data-page="employees">&#128101; Employees</a>
+      <a href="#" class="nav-link" data-page="leaves">&#127774; Leaves</a>
+      <a href="#" class="nav-link" data-page="payroll">&#128176; Payroll</a>
+    </nav>
+    <div class="sidebar-footer">
+      <span id="sidebar-user">&#128100; John Doe</span>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main" id="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <button class="menu-btn" id="menu-btn" title="Toggle menu">&#9776;</button>
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+      <div class="topbar-right">
+        <span id="clock-display" class="live-clock"></span>
+        <span class="avatar">JD</span>
+      </div>
+    </div>
+
+    <!-- Pages -->
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#4f8ef7">&#128101;</div>
+            <div>
+              <p class="stat-label">Total Employees</p>
+              <p class="stat-value" id="stat-total">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#27ae60">&#9989;</div>
+            <div>
+              <p class="stat-label">Present Today</p>
+              <p class="stat-value" id="stat-present">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e74c3c">&#10060;</div>
+            <div>
+              <p class="stat-label">Absent Today</p>
+              <p class="stat-value" id="stat-absent">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#f39c12">&#127774;</div>
+            <div>
+              <p class="stat-label">On Leave</p>
+              <p class="stat-value" id="stat-leave">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>Today's Attendance</h2>
+          <table class="data-table" id="today-table">
+            <thead>
+              <tr><th>Employee</th><th>Clock In</th><th>Clock Out</th><th>Status</th></tr>
+            </thead>
+            <tbody id="today-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLOCK IN/OUT -->
+      <div class="page" id="page-clock">
+        <div class="clock-center">
+          <div class="clock-card">
+            <h2>&#128336; Time Tracker</h2>
+            <div class="big-clock" id="big-clock"></div>
+            <div class="date-label" id="date-label"></div>
+
+            <div class="form-group">
+              <label for="clock-employee">Employee</label>
+              <select id="clock-employee">
+                <option value="">-- Select Employee --</option>
+              </select>
+            </div>
+
+            <div class="clock-buttons">
+              <button class="btn btn-success" id="btn-clockin">&#9658; Clock In</button>
+              <button class="btn btn-danger" id="btn-clockout">&#9632; Clock Out</button>
+            </div>
+
+            <div class="clock-status" id="clock-status"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="page" id="page-attendance">
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Attendance Records</h2>
+            <div>
+              <input type="date" id="att-filter-date" class="input-field" />
+              <button class="btn btn-primary" id="att-filter-btn">Filter</button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Employee</th><th>Date</th><th>Clock In</th><th>Clock Out</th><th>Hours</th><th>Status</th></tr>
+            </thead>
+            <tbody id="att-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div class="page" id="page-employees">
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Employees</h2>
+            <button class="btn btn-primary" id="add-emp-btn">+ Add Employee</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Department</th><th>Position</th><th>Email</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="emp-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEAVES -->
+      <div class="page" id="page-leaves">
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Leave Requests</h2>
+            <button class="btn btn-primary" id="add-leave-btn">+ Request Leave</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="leaves-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYROLL -->
+      <div class="page" id="page-payroll">
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Payroll</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Employee</th><th>Department</th><th>Days Present</th><th>Base Salary</th><th>Deductions</th><th>Net Pay</th></tr>
+            </thead>
+            <tbody id="payroll-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- Modal: Add Employee -->
+  <div class="modal-overlay" id="emp-modal">
+    <div class="modal">
+      <h3>Add Employee</h3>
+      <div class="form-group"><label>Full Name</label><input type="text" id="emp-name" class="input-field" /></div>
+      <div class="form-group"><label>Department</label>
+        <select id="emp-dept" class="input-field">
+          <option>Engineering</option><option>Marketing</option><option>HR</option>
+          <option>Finance</option><option>Operations</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Position</label><input type="text" id="emp-pos" class="input-field" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="emp-email" class="input-field" /></div>
+      <div class="form-group"><label>Base Salary ($)</label><input type="number" id="emp-salary" class="input-field" value="3000" /></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="emp-cancel">Cancel</button>
+        <button class="btn btn-primary" id="emp-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Leave Request -->
+  <div class="modal-overlay" id="leave-modal">
+    <div class="modal">
+      <h3>Request Leave</h3>
+      <div class="form-group"><label>Employee</label>
+        <select id="leave-emp" class="input-field"></select>
+      </div>
+      <div class="form-group"><label>Leave Type</label>
+        <select id="leave-type" class="input-field">
+          <option>Annual</option><option>Sick</option><option>Emergency</option><option>Unpaid</option>
+        </select>
+      </div>
+      <div class="form-group"><label>From</label><input type="date" id="leave-from" class="input-field" /></div>
+      <div class="form-group"><label>To</label><input type="date" id="leave-to" class="input-field" /></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="leave-cancel">Cancel</button>
+        <button class="btn btn-primary" id="leave-save">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
