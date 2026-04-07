@@ -1,0 +1,4 @@
+# Belt-and-suspenders SPA redirect.
+# Netlify processes netlify.toml [[redirects]] first; this file acts as a
+# second layer so the single-page app route catches any path.
+/*    /index.html   200
