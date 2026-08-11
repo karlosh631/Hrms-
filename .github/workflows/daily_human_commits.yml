@@ -1,6 +1,3 @@
-# Runs daily at 10:00 AM GMT, sleeps a randomized delay up to 55 minutes,
-# runs the Python script, then commits/pushes only when changes exist AND
-# the commit message is not the same as the last commit message.
 name: Daily human-like commits
 
 on:
@@ -15,11 +12,6 @@ jobs:
   daily-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: Randomized delay (simulate human timing)
-        run: |
-          # sleep up to 55 minutes (3300 seconds)
-          sleep $((RANDOM % 3300))
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -34,9 +26,11 @@ jobs:
       - name: Run daily contributor script
         run: |
           python scripts/daily_contributor.py
-        env:
-          # expose repo info for possible future use
-          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Short sleep after work done (simulate small human delay)
+        run: |
+          # small fixed delay to ensure files are flushed and to mimic a short pause
+          sleep 5
 
       - name: Configure git identity
         run: |
@@ -44,63 +38,72 @@ jobs:
           git config user.email "thapakarlosh631@gmail.com"
 
       - name: Stage modified files
+        id: stage
         run: |
+          # If the script wrote .modified_files, stage those lines (safe).
           if [ -f .modified_files ]; then
-            # use the list written by the script, ignore missing files
-            xargs -a .modified_files -r -I{} bash -c 'if [ -e "{}" ]; then git add "{}"; fi'
+            echo "Staging files listed in .modified_files"
+            while IFS= read -r f || [ -n "$f" ]; do
+              if [ -e "$f" ]; then
+                git add "$f" || true
+              fi
+            done < .modified_files
           else
-            # fallback: stage all changes
+            echo ".modified_files not found; staging all changes"
             git add -A
           fi
 
-      - name: Exit if no staged changes
-        id: check_changes
-        run: |
+          # Signal whether there are staged changes
           if git diff --staged --quiet; then
             echo "no_changes=true" >> $GITHUB_OUTPUT
-            echo "No changes to commit."
           else
             echo "no_changes=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Read selected commit message
-        if: steps.check_changes.outputs.no_changes == 'false'
+      - name: Skip if no changes
+        if: steps.stage.outputs.no_changes == 'true'
         run: |
+          echo "No staged changes; exiting."
+
+      - name: Read new commit message and last commit
+        if: steps.stage.outputs.no_changes == 'false'
+        id: compare
+        run: |
+          NEW_MSG=""
           if [ -f .commit_message ]; then
-            COMMIT_MSG="$(cat .commit_message)"
-            echo "commit_message<<EOF" >> $GITHUB_OUTPUT
-            echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            NEW_MSG="$(cat .commit_message | sed 's/\r$//')"
           else
-            echo "commit_message<<EOF" >> $GITHUB_OUTPUT
-            echo "chore: daily notes update" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            NEW_MSG="chore: daily notes update"
           fi
+          # Last commit message (may be empty on first commit)
+          LAST_MSG="$(git log -1 --pretty=%B 2>/dev/null || true)"
+          echo "new_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$NEW_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "last_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$LAST_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Skip commit if duplicate last message
-        if: steps.check_changes.outputs.no_changes == 'false'
+        if: steps.stage.outputs.no_changes == 'false'
         run: |
-          LAST_MSG="$(git log -1 --pretty=%B || true)"
-          NEW_MSG="${{ steps.read_selected_commit_message.outputs.commit_message || '' }}"
-          # GitHub pre-sets step outputs as multiline; read from file if needed
-          if [ -z "$NEW_MSG" ] && [ -f .commit_message ]; then
-            NEW_MSG="$(cat .commit_message)"
-          fi
+          NEW_MSG="${{ steps.compare.outputs.new_msg }}"
+          LAST_MSG="${{ steps.compare.outputs.last_msg }}"
           echo "Last commit message: [$LAST_MSG]"
           echo "New commit message:  [$NEW_MSG]"
           if [ "$LAST_MSG" = "$NEW_MSG" ]; then
             echo "Duplicate commit message detected; skipping commit."
-            # Clean staged changes to avoid accidental commits later
+            # Reset staged changes so we don't leave them staged
             git reset
             exit 0
           fi
 
       - name: Commit and push
-        if: steps.check_changes.outputs.no_changes == 'false'
+        if: steps.stage.outputs.no_changes == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           NEW_MSG="$(cat .commit_message || echo "chore: daily notes update")"
           git commit -m "$NEW_MSG" --author="Karlosh Thapa <thapakarlosh631@gmail.com>"
-          # Push to main branch; change if your default branch is different
+          # Push to main branch; change if your default branch is not 'main'
           git push origin HEAD:main
