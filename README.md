@@ -52,3 +52,5 @@ python main.py
     └── requirements.txt
 ```
 
+
+> Tip (2026-08-11): Small dev note — check CONTRIBUTING.md for PR guidelines.
