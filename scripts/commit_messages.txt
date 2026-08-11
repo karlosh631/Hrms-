@@ -8,3 +8,8 @@ fix: clarify setup step in docs
 docs: add quick dev status
 feat: add short implementation note
 chore: update journal entries
+perf: minor doc improvements
+docs: add changelog entry
+chore: touch contributing guidance
+docs: expand quick tips
+chore: housekeeping notes
