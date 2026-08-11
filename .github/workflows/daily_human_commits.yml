@@ -1,0 +1,106 @@
+# Runs daily at 10:00 AM GMT, sleeps a randomized delay up to 55 minutes,
+# runs the Python script, then commits/pushes only when changes exist AND
+# the commit message is not the same as the last commit message.
+name: Daily human-like commits
+
+on:
+  schedule:
+    - cron: '0 10 * * *' # 10:00 AM GMT daily
+  workflow_dispatch: {} # allow manual runs
+
+permissions:
+  contents: write
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Randomized delay (simulate human timing)
+        run: |
+          # sleep up to 55 minutes (3300 seconds)
+          sleep $((RANDOM % 3300))
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run daily contributor script
+        run: |
+          python scripts/daily_contributor.py
+        env:
+          # expose repo info for possible future use
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "Karlosh Thapa"
+          git config user.email "thapakarlosh631@gmail.com"
+
+      - name: Stage modified files
+        run: |
+          if [ -f .modified_files ]; then
+            # use the list written by the script, ignore missing files
+            xargs -a .modified_files -r -I{} bash -c 'if [ -e "{}" ]; then git add "{}"; fi'
+          else
+            # fallback: stage all changes
+            git add -A
+          fi
+
+      - name: Exit if no staged changes
+        id: check_changes
+        run: |
+          if git diff --staged --quiet; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+            echo "No changes to commit."
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read selected commit message
+        if: steps.check_changes.outputs.no_changes == 'false'
+        run: |
+          if [ -f .commit_message ]; then
+            COMMIT_MSG="$(cat .commit_message)"
+            echo "commit_message<<EOF" >> $GITHUB_OUTPUT
+            echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "commit_message<<EOF" >> $GITHUB_OUTPUT
+            echo "chore: daily notes update" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Skip commit if duplicate last message
+        if: steps.check_changes.outputs.no_changes == 'false'
+        run: |
+          LAST_MSG="$(git log -1 --pretty=%B || true)"
+          NEW_MSG="${{ steps.read_selected_commit_message.outputs.commit_message || '' }}"
+          # GitHub pre-sets step outputs as multiline; read from file if needed
+          if [ -z "$NEW_MSG" ] && [ -f .commit_message ]; then
+            NEW_MSG="$(cat .commit_message)"
+          fi
+          echo "Last commit message: [$LAST_MSG]"
+          echo "New commit message:  [$NEW_MSG]"
+          if [ "$LAST_MSG" = "$NEW_MSG" ]; then
+            echo "Duplicate commit message detected; skipping commit."
+            # Clean staged changes to avoid accidental commits later
+            git reset
+            exit 0
+          fi
+
+      - name: Commit and push
+        if: steps.check_changes.outputs.no_changes == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_MSG="$(cat .commit_message || echo "chore: daily notes update")"
+          git commit -m "$NEW_MSG" --author="Karlosh Thapa <thapakarlosh631@gmail.com>"
+          # Push to main branch; change if your default branch is different
+          git push origin HEAD:main
