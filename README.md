@@ -54,3 +54,5 @@ python main.py
 
 
 > Tip (2026-08-11): Small dev note — check CONTRIBUTING.md for PR guidelines.
+
+> Tip (2026-08-12): Small dev note — check CONTRIBUTING.md for PR guidelines.
