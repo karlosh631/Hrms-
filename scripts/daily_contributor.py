@@ -4,8 +4,8 @@ Append human-like developer content to a randomized set of target files,
 or perform a randomized "behavior" such as adding a CHANGELOG entry or updating README.
 
 Outputs:
-- .commit_message   : selected commit message (one line)
-- .modified_files   : newline-separated list of files that were modified (staged by workflow)
+- .commit_message    : selected commit message (one line)
+- .modified_files    : newline-separated list of files that were modified (staged by workflow)
 
 Paths:
 - scripts/commit_messages.txt   (external file you can edit)
@@ -14,11 +14,11 @@ Paths:
 
 import random
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 COMMIT_MESSAGES_FILE = "scripts/commit_messages.txt"
 
-# Expanded target file list to create varied activity
+# Target file list for varied activity
 TARGET_FILES = [
     "README.md",
     "CHANGELOG.md",
@@ -45,7 +45,22 @@ TEMPLATES = [
     "Progress: sketched optimization idea for {component}; prototype next.",
     "Found: minor typo in {component} docs; corrected phrasing.",
     "Note: added a checklist item for code review of {component}.",
-    "Refactor thought: consider splitting {component} into smaller helpers for tests."
+    "Refactor thought: consider splitting {component} into smaller helpers for tests.",
+    "Performance review: benchmarked {component} under heavy payload.",
+    "Security check: audited permission flags in {component}.",
+    "Deprecation notice: flagged legacy interface in {component} for future removal.",
+    "Dx improvement: simplified setup commands in {component} guide.",
+    "Log adjustment: toned down verbose debug statements in {component}.",
+    "Type check: tightened strict mode types across {component}.",
+    "Coverage update: added unit test stubs for {component}.",
+    "API draft: sketched out REST response contract for {component}.",
+    "State sync: investigated race conditions within {component}.",
+    "Error handling: added graceful fallback logic inside {component}.",
+    "Dependency check: reviewed compatibility of packages used in {component}.",
+    "Cache strategy: evaluated TTL values for {component}.",
+    "UI alignment: verified design token consistency in {component}.",
+    "Telemetry: added event tracking markers to {component}.",
+    "Database review: verified indexing strategy on queries in {component}."
 ]
 
 COMPONENTS = [
@@ -58,7 +73,27 @@ COMPONENTS = [
     "CI configuration",
     "docs/setup",
     "error handling",
-    "session store"
+    "session store",
+    "jwt validation",
+    "rate limiter",
+    "payment gateway wrapper",
+    "redis cache pool",
+    "notification dispatcher",
+    "s3 file uploader",
+    "graphql resolver",
+    "cors middleware",
+    "input sanitizer",
+    "logger service",
+    "audit trail recorder",
+    "feature flag manager",
+    "email template engine",
+    "websocket handler",
+    "rbac permission check",
+    "search index sync",
+    "background queue worker",
+    "health check endpoint",
+    "env variable validator",
+    "metrics exporter"
 ]
 
 def ensure_parent_dir(path):
@@ -83,7 +118,7 @@ def pick_commit_message():
     return random.choice(messages)
 
 def make_line():
-    ts = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S GMT")
     template = random.choice(TEMPLATES)
     component = random.choice(COMPONENTS)
     extra = ""
@@ -97,13 +132,13 @@ def make_line():
 def append_lines_to_file(path, n_lines):
     ensure_parent_dir(path)
     with open(path, "a", encoding="utf-8") as fh:
-        fh.write(f"\n<!-- auto-updated: {datetime.utcnow().isoformat()} -->\n")
+        fh.write(f"\n<!-- auto-updated: {datetime.now(timezone.utc).isoformat()} -->\n")
         for _ in range(n_lines):
             fh.write(make_line() + "\n")
 
 def prepend_changelog_entry(path):
     ensure_parent_dir(path)
-    ts = datetime.utcnow().strftime("%Y-%m-%d")
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d GMT")
     entry = f"- {ts}: automated daily note — quick status update.\n"
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as fh:
@@ -117,14 +152,13 @@ def prepend_changelog_entry(path):
 
 def update_readme_tip(path):
     ensure_parent_dir(path)
-    tip = f"\n> Tip ({datetime.utcnow().strftime('%Y-%m-%d')}): Small dev note — check CONTRIBUTING.md for PR guidelines.\n"
-    # Append tip to README to keep behavior unobtrusive
+    tip = f"\n> Tip ({datetime.now(timezone.utc).strftime('%Y-%m-%d GMT')}): Small dev note — check CONTRIBUTING.md for PR guidelines.\n"
     with open(path, "a", encoding="utf-8") as fh:
         fh.write(tip)
 
 def touch_contributing(path):
     ensure_parent_dir(path)
-    line = f"\n- Quick suggestion ({datetime.utcnow().strftime('%Y-%m-%d')}): add CI badge to README.\n"
+    line = f"\n- Quick suggestion ({datetime.now(timezone.utc).strftime('%Y-%m-%d GMT')}): add CI badge to README.\n"
     with open(path, "a", encoding="utf-8") as fh:
         fh.write(line)
 
@@ -136,12 +170,9 @@ def write_outputs(commit_msg, modified_files):
             fh.write(p + "\n")
 
 def main():
-    # Decide on behavior type to increase variety
-    # probabilities: append_bundle 60%, changelog 15%, readme_tip 15%, contributing_touch 10%
     r = random.random()
     modified = []
     if r < 0.60:
-        # Append to 1-3 files
         n_lines = random.randint(5, 10)
         n_files = random.randint(1, 3)
         chosen = random.sample(TARGET_FILES, k=n_files)
@@ -149,30 +180,24 @@ def main():
             append_lines_to_file(f, n_lines)
             modified.append(f)
     elif r < 0.75:
-        # Prepend a changelog entry
         prepend_changelog_entry("CHANGELOG.md")
         modified.append("CHANGELOG.md")
-        # also sometimes add a dev_notes append to look natural
         if random.random() < 0.4:
-            append_lines_to_file("docs/dev_notes.md", random.randint(3,6))
+            append_lines_to_file("docs/dev_notes.md", random.randint(3, 6))
             modified.append("docs/dev_notes.md")
     elif r < 0.90:
-        # Update README with a small tip
         update_readme_tip("README.md")
         modified.append("README.md")
-        # maybe also append to quick_tips
         if random.random() < 0.3:
-            append_lines_to_file("docs/quick_tips.md", random.randint(2,5))
+            append_lines_to_file("docs/quick_tips.md", random.randint(2, 5))
             modified.append("docs/quick_tips.md")
     else:
-        # Touch CONTRIBUTING.md or add a note
         touch_contributing("CONTRIBUTING.md")
         modified.append("CONTRIBUTING.md")
         if random.random() < 0.5:
-            append_lines_to_file("docs/dev_notes.md", random.randint(2,5))
+            append_lines_to_file("docs/dev_notes.md", random.randint(2, 5))
             modified.append("docs/dev_notes.md")
 
-    # Deduplicate modified list and ensure paths are normalized
     modified = list(dict.fromkeys(modified))
 
     commit_msg = pick_commit_message()
