@@ -7,3 +7,5 @@
 [2026-08-16 10:23:32 GMT] Follow-up: reworded docs for email template engine and clarified expected inputs. (see issue #169)
 [2026-08-16 10:23:32 GMT] Note: added a checklist item for code review of notification dispatcher.
 [2026-08-16 10:23:32 GMT] Telemetry: added event tracking markers to input sanitizer.
+
+- Quick suggestion (2026-08-20 GMT): add CI badge to README.
