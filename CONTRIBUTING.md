@@ -9,3 +9,5 @@
 [2026-08-16 10:23:32 GMT] Telemetry: added event tracking markers to input sanitizer.
 
 - Quick suggestion (2026-08-20 GMT): add CI badge to README.
+
+- Quick suggestion (2026-08-21 GMT): add CI badge to README.
