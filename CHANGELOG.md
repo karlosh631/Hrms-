@@ -7,3 +7,10 @@
 # Changelog
 
 - 2026-08-11: automated daily note — quick status update.
+
+<!-- auto-updated: 2026-08-26T10:48:22.847052+00:00 -->
+[2026-08-26 10:48:22 GMT] Housekeeping: removed an outdated comment in payment gateway wrapper.
+[2026-08-26 10:48:22 GMT] Dx improvement: simplified setup commands in api/users guide. (see issue #124)
+[2026-08-26 10:48:22 GMT] Dx improvement: simplified setup commands in db.connection guide. (see issue #230)
+[2026-08-26 10:48:22 GMT] API draft: sketched out REST response contract for feature flag manager.
+[2026-08-26 10:48:22 GMT] Small tweak: adjusted formatting and examples in rbac permission check.
