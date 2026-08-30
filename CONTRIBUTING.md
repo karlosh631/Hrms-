@@ -20,3 +20,5 @@
 [2026-08-23 10:51:44 GMT] Log adjustment: toned down verbose debug statements in metrics exporter.
 [2026-08-23 10:51:44 GMT] Log adjustment: toned down verbose debug statements in input sanitizer.
 [2026-08-23 10:51:44 GMT] Follow-up: reworded docs for auth.login and clarified expected inputs.
+
+- Quick suggestion (2026-08-30 GMT): add CI badge to README.
