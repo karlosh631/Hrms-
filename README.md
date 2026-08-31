@@ -78,3 +78,5 @@ python main.py
 [2026-08-14 11:36:18 GMT] Dependency check: reviewed compatibility of packages used in s3 file uploader. (see issue #25)
 
 > Tip (2026-08-18 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
+
+> Tip (2026-08-31 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
