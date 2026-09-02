@@ -22,3 +22,5 @@
 [2026-08-23 10:51:44 GMT] Follow-up: reworded docs for auth.login and clarified expected inputs.
 
 - Quick suggestion (2026-08-30 GMT): add CI badge to README.
+
+- Quick suggestion (2026-09-02 GMT): add CI badge to README.
