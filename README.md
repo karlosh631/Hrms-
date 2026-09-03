@@ -80,3 +80,5 @@ python main.py
 > Tip (2026-08-18 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
 
 > Tip (2026-08-31 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
+
+> Tip (2026-09-03 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
