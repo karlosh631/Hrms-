@@ -25,3 +25,12 @@
 <!-- auto-updated: 2026-09-03T14:51:56.990892+00:00 -->
 [2026-09-03 14:51:56 GMT] API draft: sketched out REST response contract for rate limiter.
 [2026-09-03 14:51:56 GMT] Database review: verified indexing strategy on queries in background queue worker. (see issue #227)
+
+<!-- auto-updated: 2026-09-08T14:20:05.421945+00:00 -->
+[2026-09-08 14:20:05 GMT] Housekeeping: removed an outdated comment in rbac permission check.
+[2026-09-08 14:20:05 GMT] Error handling: added graceful fallback logic inside rate limiter. (see issue #310)
+[2026-09-08 14:20:05 GMT] Refactor thought: consider splitting search index sync into smaller helpers for tests.
+[2026-09-08 14:20:05 GMT] Quick note: reviewed error handling and left a small TODO about edge-case handling. — example: `fix_788`
+[2026-09-08 14:20:05 GMT] Database review: verified indexing strategy on queries in health check endpoint.
+[2026-09-08 14:20:05 GMT] Quick note: reviewed graphql resolver and left a small TODO about edge-case handling.
+[2026-09-08 14:20:05 GMT] API draft: sketched out REST response contract for rate limiter. — example: `fix_353`
