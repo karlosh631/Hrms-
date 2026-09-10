@@ -89,3 +89,5 @@ python main.py
 [2026-09-06 13:39:40 GMT] Security check: audited permission flags in websocket handler.
 [2026-09-06 13:39:40 GMT] Performance review: benchmarked api/users under heavy payload.
 [2026-09-06 13:39:40 GMT] Error handling: added graceful fallback logic inside env variable validator. (see issue #45)
+
+> Tip (2026-09-10 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
