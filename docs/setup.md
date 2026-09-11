@@ -49,3 +49,12 @@
 [2026-09-09 14:43:55 GMT] Database review: verified indexing strategy on queries in jwt validation.
 [2026-09-09 14:43:55 GMT] Database review: verified indexing strategy on queries in db.connection.
 [2026-09-09 14:43:55 GMT] Log adjustment: toned down verbose debug statements in deployment script. — example: `fix_870`
+
+<!-- auto-updated: 2026-09-11T13:51:12.208591+00:00 -->
+[2026-09-11 13:51:12 GMT] Dx improvement: simplified setup commands in CI configuration guide. — example: `fix_873`
+[2026-09-11 13:51:12 GMT] Telemetry: added event tracking markers to metrics exporter.
+[2026-09-11 13:51:12 GMT] Telemetry: added event tracking markers to websocket handler. (see issue #193)
+[2026-09-11 13:51:12 GMT] Investigation: observed flaky behavior around metrics exporter; note to reproduce later.
+[2026-09-11 13:51:12 GMT] Log adjustment: toned down verbose debug statements in docs/setup. (see issue #136)
+[2026-09-11 13:51:12 GMT] Dx improvement: simplified setup commands in payment gateway wrapper guide.
+[2026-09-11 13:51:12 GMT] Found: minor typo in jwt validation docs; corrected phrasing. (see issue #335)
