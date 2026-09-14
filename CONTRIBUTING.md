@@ -35,3 +35,5 @@
 [2026-09-05 13:27:40 GMT] Small tweak: adjusted formatting and examples in s3 file uploader.
 [2026-09-05 13:27:40 GMT] Small tweak: adjusted formatting and examples in deployment script. — example: `fix_532`
 [2026-09-05 13:27:40 GMT] State sync: investigated race conditions within rbac permission check.
+
+- Quick suggestion (2026-09-14 GMT): add CI badge to README.
