@@ -37,3 +37,5 @@
 [2026-09-05 13:27:40 GMT] State sync: investigated race conditions within rbac permission check.
 
 - Quick suggestion (2026-09-14 GMT): add CI badge to README.
+
+- Quick suggestion (2026-09-19 GMT): add CI badge to README.
