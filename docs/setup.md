@@ -69,3 +69,10 @@
 [2026-09-23 15:38:07 GMT] Quick note: reviewed health check endpoint and left a small TODO about edge-case handling.
 [2026-09-23 15:38:07 GMT] Progress: sketched optimization idea for background queue worker; prototype next.
 [2026-09-23 15:38:07 GMT] UI alignment: verified design token consistency in jwt validation.
+
+<!-- auto-updated: 2026-09-25T15:26:36.499666+00:00 -->
+[2026-09-25 15:26:36 GMT] Investigation: observed flaky behavior around rbac permission check; note to reproduce later.
+[2026-09-25 15:26:36 GMT] Reminder: check CI setup that references websocket handler. — example: `fix_504`
+[2026-09-25 15:26:36 GMT] Telemetry: added event tracking markers to notification dispatcher.
+[2026-09-25 15:26:36 GMT] Quick note: reviewed session store and left a small TODO about edge-case handling. — example: `fix_658`
+[2026-09-25 15:26:36 GMT] Progress: sketched optimization idea for graphql resolver; prototype next.
