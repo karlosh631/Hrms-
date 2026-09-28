@@ -117,3 +117,5 @@ python main.py
 [2026-09-22 14:24:01 GMT] Quick note: reviewed auth.login and left a small TODO about edge-case handling.
 [2026-09-22 14:24:01 GMT] Refactor thought: consider splitting api/users into smaller helpers for tests.
 [2026-09-22 14:24:01 GMT] Progress: sketched optimization idea for jwt validation; prototype next.
+
+> Tip (2026-09-28 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
