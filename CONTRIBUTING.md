@@ -66,3 +66,5 @@
 [2026-09-25 15:26:36 GMT] Performance review: benchmarked background queue worker under heavy payload.
 [2026-09-25 15:26:36 GMT] Quick note: reviewed websocket handler and left a small TODO about edge-case handling.
 [2026-09-25 15:26:36 GMT] Refactor thought: consider splitting db.connection into smaller helpers for tests.
+
+- Quick suggestion (2026-09-29 GMT): add CI badge to README.
