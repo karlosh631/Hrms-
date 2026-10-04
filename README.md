@@ -130,3 +130,5 @@ python main.py
 [2026-10-01 17:00:58 GMT] Small tweak: adjusted formatting and examples in jwt validation.
 [2026-10-01 17:00:58 GMT] Telemetry: added event tracking markers to graphql resolver.
 [2026-10-01 17:00:58 GMT] Follow-up: reworded docs for health check endpoint and clarified expected inputs. (see issue #235)
+
+> Tip (2026-10-04 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
