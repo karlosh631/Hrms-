@@ -141,3 +141,5 @@ python main.py
 [2026-10-05 18:41:23 GMT] Database review: verified indexing strategy on queries in session store.
 [2026-10-05 18:41:23 GMT] Progress: sketched optimization idea for scheduler; prototype next.
 [2026-10-05 18:41:23 GMT] Dependency check: reviewed compatibility of packages used in api/users.
+
+> Tip (2026-10-09 GMT): Small dev note — check CONTRIBUTING.md for PR guidelines.
