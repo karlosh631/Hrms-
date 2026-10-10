@@ -77,3 +77,5 @@
 [2026-10-05 18:41:23 GMT] Database review: verified indexing strategy on queries in deployment script.
 [2026-10-05 18:41:23 GMT] Reminder: check CI setup that references db.connection.
 [2026-10-05 18:41:23 GMT] Quick note: reviewed session store and left a small TODO about edge-case handling. (see issue #49)
+
+- Quick suggestion (2026-10-10 GMT): add CI badge to README.
