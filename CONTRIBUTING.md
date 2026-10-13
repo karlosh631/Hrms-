@@ -90,3 +90,5 @@
 [2026-10-11 16:35:17 GMT] Progress: sketched optimization idea for deployment script; prototype next.
 [2026-10-11 16:35:17 GMT] Error handling: added graceful fallback logic inside task runner.
 [2026-10-11 16:35:17 GMT] Coverage update: added unit test stubs for db.connection.
+
+- Quick suggestion (2026-10-13 GMT): add CI badge to README.
