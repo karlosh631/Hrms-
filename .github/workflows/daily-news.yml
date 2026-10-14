@@ -29,7 +29,7 @@ jobs:
       - name: Generate digest and commit
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python daily_contributor.py
+        run: python scripts/daily_contributor.py
 
       - name: Push
         run: git push
