@@ -10,7 +10,7 @@ Daily IT News Digest bot.
 Setup:
   export GEMINI_API_KEY="..."     (in GitHub: Settings > Secrets > Actions)
 Optional env vars:
-  GEMINI_MODEL   default: gemini-2.5-flash
+  GEMINI_MODEL   preferred model; default tries gemini-3.8-flash, then older fallbacks
   MIN_COMMITS    default: 80
   MAX_COMMITS    default: 100
   FORCE          set to 1 to regenerate even if today's file already exists
@@ -28,7 +28,15 @@ from datetime import datetime, timezone
 import requests
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+# Tried in order; a model that returns 404 (retired / not available to this key) is skipped.
+MODEL_CANDIDATES = [m for m in [
+    os.environ.get("GEMINI_MODEL", "").strip(),
+    "gemini-3.8-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash",
+] if m]
 MIN_COMMITS = int(os.environ.get("MIN_COMMITS", "80"))
 MAX_COMMITS = int(os.environ.get("MAX_COMMITS", "100"))
 FORCE = os.environ.get("FORCE") == "1"
@@ -36,24 +44,37 @@ FORCE = os.environ.get("FORCE") == "1"
 NEWS_DIR = "news"
 MIN_ARTICLE_LINES = 50
 STORY_COUNT = 5
-ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
+BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+_model_idx = 0  # index into MODEL_CANDIDATES; advances when a model 404s
 
 
 # ----------------------------------------------------------------- Gemini ---
 def gemini(prompt, grounded=True, retries=4):
     """Call Gemini. Returns (text, [(title, uri), ...])."""
+    global _model_idx
     body = {"contents": [{"parts": [{"text": prompt}]}]}
     if grounded:
         body["tools"] = [{"google_search": {}}]
     headers = {"Content-Type": "application/json", "x-goog-api-key": API_KEY}
 
     last_err = None
-    for attempt in range(1, retries + 1):
+    attempt = 0
+    while attempt < retries:
+        attempt += 1
+        model = MODEL_CANDIDATES[_model_idx]
         try:
-            r = requests.post(ENDPOINT, json=body, headers=headers, timeout=180)
+            r = requests.post(f"{BASE_URL}/{model}:generateContent",
+                              json=body, headers=headers, timeout=180)
+            if r.status_code == 404 and _model_idx + 1 < len(MODEL_CANDIDATES):
+                print(f"  model '{model}' not available (404); trying "
+                      f"'{MODEL_CANDIDATES[_model_idx + 1]}'")
+                _model_idx += 1
+                attempt -= 1  # switching models doesn't use up a retry
+                continue
             if r.status_code in (429, 500, 502, 503, 504):
                 raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
-            r.raise_for_status()
+            if not r.ok:
+                raise RuntimeError(f"HTTP {r.status_code} from {model}: {r.text[:300]}")
             data = r.json()
             cand = data["candidates"][0]
             text = "".join(p.get("text", "") for p in cand["content"]["parts"]).strip()
