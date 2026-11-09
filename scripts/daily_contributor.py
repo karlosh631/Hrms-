@@ -81,8 +81,9 @@ def gemini(prompt, retries=5):
             r = requests.post(f"{BASE_URL}/{model}:generateContent",
                               json=body, headers=headers, timeout=180)
             no_free_quota = r.status_code == 429 and re.search(r'limit:\s*0\b|"quotaValue":\s*"0"', r.text)
-            if (r.status_code == 404 or no_free_quota) and has_next:
-                print(f"  model '{model}' unavailable on this key (HTTP {r.status_code}); "
+            overloaded = r.status_code == 503
+            if (r.status_code == 404 or no_free_quota or overloaded) and has_next:
+                print(f"  model '{model}' unavailable or overloaded (HTTP {r.status_code}); "
                       f"trying '{MODEL_CANDIDATES[_model_idx + 1]}'")
                 _model_idx += 1
                 attempt -= 1
